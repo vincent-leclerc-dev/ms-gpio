@@ -2,13 +2,14 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ActivateGpioDto } from './ActivateGpioDto';
 import { AppService } from './app.service';
+import { JSONObject } from './types/json';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ cmd: 'listJ8' })
-  listJ8(): string {
+  listJ8(): JSONObject {
     return this.appService.listJ8();
   }
 
@@ -19,7 +20,6 @@ export class AppController {
 
   @MessagePattern({ cmd: 'resetGpio' })
   resetGpio(@Payload() gpioId: string): string {
-    console.log(gpioId);
     return this.appService.resetGpio(gpioId);
   }
 

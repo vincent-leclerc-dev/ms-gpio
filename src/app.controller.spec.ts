@@ -16,30 +16,38 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should list gpios', () => {
-      const input = ['GPIO0'];
+      const input = { '3': 'GPIO2' };
 
-      jest.spyOn(appController, 'listGpios').mockImplementation(() => input);
+      jest.spyOn(appController, 'listJ8').mockImplementation(() => input);
 
-      expect(appController.listGpios()).toBe(input);
+      expect(appController.listJ8()).toBe(input);
     });
 
     it('should activate a gpio', () => {
-      jest.spyOn(appController, 'activateGpio').mockImplementation(() => AppService.REQUEST_SENT);
+      jest
+        .spyOn(appController, 'activateGpio')
+        .mockImplementation(() => AppService.REQUEST_SENT);
 
-      expect(appController.activateGpio({
-        gpioId: 'GPIO0',
-        during: '4'
-      })).toBe(AppService.REQUEST_SENT);
+      expect(
+        appController.activateGpio({
+          gpioId: 'GPIO0',
+          during: '4',
+        }),
+      ).toBe(AppService.REQUEST_SENT);
     });
 
     it('should reset a gpio', () => {
-      jest.spyOn(appController, 'resetGpio').mockImplementation(() => AppService.REQUEST_SENT);
+      jest
+        .spyOn(appController, 'resetGpio')
+        .mockImplementation(() => AppService.REQUEST_SENT);
 
       expect(appController.resetGpio('GPIO0')).toBe(AppService.REQUEST_SENT);
     });
 
     it('should reset all gpios', () => {
-      jest.spyOn(appController, 'resetGpios').mockImplementation(() => AppService.REQUEST_SENT);
+      jest
+        .spyOn(appController, 'resetGpios')
+        .mockImplementation(() => AppService.REQUEST_SENT);
 
       expect(appController.resetGpios()).toBe(AppService.REQUEST_SENT);
     });

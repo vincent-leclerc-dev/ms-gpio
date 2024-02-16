@@ -4,33 +4,31 @@
 #   Activate a GPIO on Raspberry Pi 5   #
 #########################################
 
-import ntpath, sys, time
+import argparse, ntpath, os, sys, time
 import gpiod
 
 from J8 import gpioExists
-from utils import colors, GpioException
+from utils import eprint, GpioException
 
 try:
     scriptName = ntpath.basename(sys.argv[0])
 
-    if len(sys.argv) == 1 or len(sys.argv) > 3:
-        raise GpioException(
-            colors.ERROR + 'Error : bad arguments number\n' + 
-            colors.WARNING + 'Usage: python ' + scriptName + ' gpio_bcm_id\n' +
-            colors.SUCCESS + 'ex: "python ' + scriptName + ' 0"\n' +
-            colors.WARNING + 'Usage with timer: python ' + scriptName + ' gpio_bcm_id execution_time_in_second\n' + 
-            colors.SUCCESS + 'ex: "python ' + scriptName + ' 0 4"')
-   
-    gpioId = int(sys.argv[1])
+    parser = argparse.ArgumentParser(prog='python ' + scriptName, usage='%(prog)s [options]')
+
+    parser.add_argument('gpio_id', help='id of gpio, ex: 0', type=int)
+    parser.add_argument('-t', help='time in seconds, ex: -t 4', type=int)
+
+    args = parser.parse_args()
+
+    gpioId = args.gpio_id
+    during = args.t
 
     if gpioExists(gpioId) == False:
-        raise GpioException(
-            colors.ERROR + 'Error : bad gpio id'
-        )
+        raise GpioException('gpio id was not found')
 
-    during = None
-    if len(sys.argv) == 3:
-        during = int(sys.argv[2])
+    dir = os.listdir('/dev/gpiochip4')
+    if len(dir) == 0: 
+        raise GpioException('gpiochip4 was not found')
 
     # select chipset gpiomem4 where are the GPIO
     chip = gpiod.Chip('gpiochip4')
@@ -50,7 +48,6 @@ try:
 
     # wait
     if during != None:
-
         time.sleep(during)
  
         # get the handle to the GPIO line at given offset
@@ -66,4 +63,4 @@ try:
         pin_line.release()
 
 except GpioException as e:
-    print(e)
+    eprint(e)

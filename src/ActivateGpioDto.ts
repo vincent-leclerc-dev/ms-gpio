@@ -1,4 +1,4 @@
 export interface ActivateGpioDto {
-    gpioId: string;
-    during: string;
+  gpioId: string;
+  during: string;
 }
