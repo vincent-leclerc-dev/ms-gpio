@@ -10,13 +10,13 @@ import { AppService } from './app.service';
         name: 'SERVICE_GPIO',
         transport: Transport.TCP,
         options: {
-          host: 'ms-gpio',
-          port: 3001
-        }
-      }
+          host: process.env.APP_HOST,
+          port: parseInt(process.env.APP_PORT, 10),
+        },
+      },
     ]),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,24 @@
+version: '3.8'
+networks:
+  ms-network:
+    external: true
+services:
+  ms-gpio:
+    container_name: ms-gpio
+    image: ms-gpio-development
+    restart: unless-stopped
+    privileged: true # authorize to r ead and write in gpio memory
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /dev/gpiochip4:/dev/gpiochip4 # share access to gpio memory
+    ports:
+      - '3001:${APP_PORT}'
+    networks:
+      - ms-network
+    command: npx nest start --watch

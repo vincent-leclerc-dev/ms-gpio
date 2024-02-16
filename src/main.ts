@@ -8,10 +8,10 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: "ms-gpio",
-        port: 3001
-      }
-    }
+        host: process.env.APP_HOST,
+        port: parseInt(process.env.APP_PORT, 10),
+      },
+    },
   );
 
   await app.listen();
