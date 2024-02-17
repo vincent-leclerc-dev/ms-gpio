@@ -30,8 +30,6 @@ ENV NODE_ENV production
 
 RUN npm ci --only=production && npm cache clean --force
 
-USER node
-
 # production
 FROM node:21.6-alpine3.18 As production
 
