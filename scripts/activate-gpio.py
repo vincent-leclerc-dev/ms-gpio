@@ -26,7 +26,7 @@ try:
     if gpioExists(gpioId) == False:
         raise GpioException('gpio id was not found')
 
-    if os.path.isfile('/dev/gpiochip4') == False: 
+    if 'gpiochip4' in os.listdir('/dev') == False: 
         raise GpioException('gpiochip4 was not found')
 
     # select chipset gpiomem4 where are the GPIO
