@@ -11,8 +11,6 @@ RUN npm ci
 
 COPY . .
 
-USER node
-
 # build for production
 FROM node:21.6-alpine3.18 As build
 
